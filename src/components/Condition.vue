@@ -1,11 +1,23 @@
 <template>
   <div class="condition-wrap condition-wrap-before">
      <el-cascader
+     ref="cascader"
      style="margin-right:20px;"
     :options="options"
+    v-show="selectedOptions[0] !== 'INPUT'"
     v-model="selectedOptions">
   </el-cascader>
-   <el-select style="margin-right:20px;width:80px;" v-model="Svalue" placeholder="请选择">
+
+<div v-show="selectedOptions[0] == 'INPUT'" style="display:inline-block">
+   <el-input  style="margin-right:20px;width: 120px;" v-model="input" placeholder="请输入内容"></el-input>
+  <el-cascader
+  placeholder="修改值类型"
+     style="margin-right:20px;"
+    :options="options"
+    @change="getCascaderValue">
+  </el-cascader>
+</div>
+   <el-select style="margin-right:20px;width:80px;" v-model="Svalue" placeholder="请选择操作符">
     <el-option
       v-for="item in Selectoptions"
       :key="item.value"
@@ -13,8 +25,25 @@
       :value="item.value">
     </el-option>
   </el-select>
-  <el-input style="margin-right:20px;width: 120px;" v-model="input" placeholder="请输入内容"></el-input>
+  <el-cascader
+     ref="cascader"
+     style="margin-right:20px;"
+    :options="options"
+    v-show="selectedOptions[0] !== 'INPUT'"
+    v-model="selectedOptions">
+  </el-cascader>
 
+<div v-show="selectedOptions[0] == 'INPUT'" style="display:inline-block">
+   <el-input  style="margin-right:20px;width: 120px;" v-model="input" placeholder="请输入内容"></el-input>
+  <el-cascader
+  placeholder="修改值类型"
+     style="margin-right:20px;"
+    :options="options"
+    @change="getCascaderValue">
+  </el-cascader>
+</div>
+<el-button type="text">删除</el-button>
+ 
   </div>
 </template>
 
@@ -22,10 +51,14 @@
 export default {
   name: 'Condition',
   props: [
-    'rootCondition'
+    'rootCondition',
+    'variables',
+    'constants',
+    'funcs'
   ],
   data:()=>{
     return {
+      curValue:{},
       input:'',
       Svalue:'',
       Selectoptions:[
@@ -47,100 +80,55 @@ export default {
         }
       ],
       selectedOptions:[],
-      options:[{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }]
+      options:[
+        {
+          value: 'INPUT',
+          label: '输入值',
         }]
     }
   },
   created(){
+    console.log(this.rootCondition);
+    let tempVARIABLE = {
+          value: 'VARIABLE',
+          label: '选择变量',
+          children: this.variables
+        }
+    let tempCONSTANT = {
+          value: 'CONSTANT',
+          label: '选择常量',
+          children: this.constants
+        }
+    let tempFUNC = {
+          value: 'FUNC',
+          label: '选择函数',
+          children: this.funcs
+        }
+    this.options.push(tempVARIABLE)
+    this.options.push(tempCONSTANT)
+    this.options.push(tempFUNC)
     // this.Svalue =  this.rootCondition.expression.operator.label
   },
   watch:{
      'rootCondition.expression':{
-    handler(newValue,oldValue){
-      console.log(newValue);
-      console.log(oldValue);
-      this.Svalue =  newValue.operator.label
+    handler(){
+      // console.log(newValue);
+      // console.log(oldValue);
+      // this.Svalue =  newValue.operator.label
     },
     immediate:true,
     deep:true
   },
-  }
+  },
+  methods: {
+    getCascaderValue(val){
+      this.selectedOptions = val
+      // console.log(val);
+      // this.$set(this.curValue,'type',val[0])
+      // console.log(this.curValue);
+      // this.$refs.cascader.blur()
+    }
+  },
 }
 </script>
 
@@ -161,4 +149,12 @@ export default {
     left: -16px;
   }
   
+  
+</style>
+<style type="text/css" lang="less">
+.el-cascader{
+    .el-input__inner{
+      border: none;
+    }
+  }
 </style>

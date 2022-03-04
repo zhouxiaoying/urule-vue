@@ -3,6 +3,8 @@
     <UniteCondition class="ftms-condition" 
     :rootCondition="rootCondition"
     :variables="variables"
+    :constants="constants"
+    :funcs="funcs"
     @changeData="changeData"
     >
     </UniteCondition>
@@ -444,6 +446,46 @@ export default {
     ]
   }
 ],
+constants:[
+  {
+    label: '性别',
+    value: 'sex',
+    children: [
+      { label: '男', value: '1' },
+      { label: '女', value: '0' }
+    ]
+  }
+],
+funcs:[
+  {
+    label: '日期',
+    value: 'date.action',
+    id: 'date.action',
+    children: [
+      {
+        value: 'format',
+        label: '格式化日期',
+        parameters: [
+          { name: '目标日期', type: 'Date' },
+          { name: '格式', type: 'String' }
+        ]
+      },
+      {
+        value: 'getDate',
+        label: '当前日期',
+        parameters: []
+      },
+      {
+        value: 'addDateForDay',
+        label: '日期加天',
+        parameters: [
+          { name: '目标日期', type: 'Date' },
+          { name: '加几天', type: 'Number' }
+        ]
+      }
+    ]
+  }
+]
     }
   },
   components:{

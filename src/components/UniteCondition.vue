@@ -14,7 +14,8 @@
   <div v-for="item in rootCondition.subConditions" :key="item.id" class="sub-condition-wrap">
   <!-- <UniteCondition v-bind="$attrs" v-on="$listeners" v-if="item.type != 'normal'" :rootCondition="item"></UniteCondition> -->
   <UniteCondition  v-if="item.type != 'normal'" :rootCondition="item"></UniteCondition>
-  <Condition v-bind="$attrs" v-on="$listeners" v-else :rootCondition="item"></Condition>
+  <Condition v-bind="$attrs" v-on="$listeners" v-else :rootCondition="item" 
+  :variables="variables" :constants="constants" :funcs="funcs"></Condition>
   </div>
 </div>
 <el-button @click="changeData">修改数据+{{rootCondition.type}}</el-button>
@@ -27,7 +28,9 @@ export default {
   name: 'UniteCondition',
   props: [
    'rootCondition',
-   'variables'
+   'variables',
+   'constants',
+   'funcs'
   ],
   components:{
     Condition
