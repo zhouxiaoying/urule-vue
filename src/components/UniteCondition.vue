@@ -13,8 +13,8 @@
 <div :class="rootCondition.subConditions.length > 1? 'sub-condition border-sub-condition':'sub-condition'" v-if="rootCondition.subConditions">
   <div v-for="item in rootCondition.subConditions" :key="item.id" class="sub-condition-wrap">
   <!-- <UniteCondition v-bind="$attrs" v-on="$listeners" v-if="item.type != 'normal'" :rootCondition="item"></UniteCondition> -->
-  <UniteCondition  v-if="item.type != 'normal'" :rootCondition="item"></UniteCondition>
-  <Condition v-bind="$attrs" v-on="$listeners" v-else :rootCondition="item" 
+  <UniteCondition   v-if="item.type != 'normal'" :rootCondition="item" :variables="variables" :constants="constants" :funcs="funcs"></UniteCondition>
+  <Condition  v-bind="$attrs" v-on="$listeners" v-else :rootCondition="item" 
   :variables="variables" :constants="constants" :funcs="funcs"></Condition>
   </div>
 </div>

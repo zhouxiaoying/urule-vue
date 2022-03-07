@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-button type="primary" @click="handleSave">保存</el-button>
     <UniteCondition class="ftms-condition" 
     :rootCondition="rootCondition"
     :variables="variables"
@@ -493,6 +494,9 @@ funcs:[
     // Condition
   },
   methods:{
+    handleSave(){
+      console.log(this.rootCondition);
+    },
     changeData(){
       alert(1);
       console.log(this.rootCondition);
